@@ -25,6 +25,7 @@ function stripComment(sm) {
   return sm.split(',').pop();
 }
 
+
 function readFromFileMap(sm, dir) {
   // NOTE: this will only work on the server since it attempts to read the map file
 
@@ -32,12 +33,21 @@ function readFromFileMap(sm, dir) {
 
   // for some odd reason //# .. captures in 1 and /* .. */ in 2
   var filename = r[1] || r[2];
-  var filepath = path.resolve(dir, filename);
+  var filepath = path.resolve(
+    dir,
+    filename[0] && filename[0] === '/' ? filename.substr(1) : filename
+  );
 
+  filepath.substr(1);
   try {
-    return fs.readFileSync(filepath, 'utf8');
+    return fs.readFileSync(filepath, "utf8");
   } catch (e) {
-    throw new Error('An error occurred while trying to read the map file at ' + filepath + '\n' + e);
+    throw new Error(
+      "An error occurred while trying to read the map file at " +
+        filepath +
+        "\n" +
+        e
+    );
   }
 }
 
